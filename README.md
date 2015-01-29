@@ -12,6 +12,7 @@ Syntax:
 python add_to_database.py -database <database name> 
                           -folder <folder with files to add> 
                           -file <file to add>
+                          -extra <file with extra information that will be added to the database>
 ```
 
 ----
@@ -98,6 +99,6 @@ Column names:
  * s_star_star_wave_value
  * s_star_star_wave_errorbar
  * d_wave_value
- * d-wave_errorbar
+ * d_wave_errorbar
  * d_star_wave_value
  * d_star_wave_errorbar
