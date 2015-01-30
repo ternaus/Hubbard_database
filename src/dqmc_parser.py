@@ -170,7 +170,8 @@ def dqmc_parser(data_file):
         'number_of_sites': number_of_sites,
         'dtau': dtau,
         'beta': beta,
-        'number_of_warmup_sweep': number_of_measurement_sweep,
+        'number_of_warmup_sweep': number_of_warmup_sweep,
+        'number_of_measurement_sweep': number_of_measurement_sweep,
         'frequency_of_recomputing_g': frequency_of_recomputing_g,
         'global_move_number_of_sites': global_move_number_of_sites,
         'accept_count': accept_count,
@@ -228,7 +229,7 @@ def dqmc_parser(data_file):
 
     if 'potential_energy_value' in locals():
         result['potential_energy_value'] = potential_energy_value
-    if 'potential_energy_errorbar' in locals():
+    if 'potential_energy_value' in locals():
         result['potential_energy_errorbar'] = potential_energy_errorbar
     if 'hopping_energy_value' in locals():
         result['hopping_energy_value'] = hopping_energy_value
@@ -244,4 +245,9 @@ def dqmc_parser(data_file):
         result['magnetization_squared_errorbar'] = magnetization_squared_errorbar
 
     return result
+
+if __name__ == '__main__':
+    a = dqmc_parser(data_file).keys()
+    a.sort()
+    print a
 
