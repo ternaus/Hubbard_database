@@ -9,7 +9,7 @@ This script parses output of the QUEST and returns dictionary with key - column 
 data_file = open("/home/vladimir/workspace/Hubbard_database/data/square_1392060634.5.out").read()
 
 def dqmc_parser(data_file):
-    algorithm = 'DQMC'
+    algorithm = "'DQMC'"
     time_slice_l = int(re.search('(?<=Time slice - L :)\s+.?\d+', data_file).group(0))
     seed = int(re.search('(?<=Random seed :)\s+.?\d+', data_file).group(0))
     u = float(re.search('(?<=U :)\s+.?\d+\.\d+', data_file).group(0))
@@ -31,8 +31,8 @@ def dqmc_parser(data_file):
     global_move_accept_count = int(re.search('(?<=Global move accept count :)\s+.?\d+', data_file).group(0))
     global_move_reject_count = int(re.search('(?<=Global move reject count :)\s+.?\d+', data_file).group(0))
     global_move_accept_rate = float(re.search('(?<=Global move accept rate :)\s+.?\d+', data_file).group(0))
-    type_of_matrix_b = re.search('(?<=Type of matrix B :)\s+.?', data_file).group(0)
-    type_of_matrix_hsf = re.search('(?<=Type of matrix HSF :)\s+.?', data_file).group(0)
+    type_of_matrix_b = '"' + re.search('(?<=Type of matrix B :)\s+.+\s*\n', data_file).group(0).strip() + '"'
+    type_of_matrix_hsf = '"' + re.search('(?<=Type of matrix HSF :)\s+\w+\s*', data_file).group(0).strip() + '"'
 
     temp = re.search('(?<=Avg sign :)\s+(\-?\d+\.\d+E?-?\+?\d+)\s+\+?-?\s+(\d+\.\d+E?\+?-?\d+)', data_file).groups()
     avg_sign_value = float(temp[0])

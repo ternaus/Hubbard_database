@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import division
 import argparse
 import sqlite3
@@ -54,8 +55,8 @@ column_names = ['name_of_the_lattice',
                 'global_move_accept_rate',
                 'type_of_matrix_b',
                 'type_of_matrix_hsf',
-                'avg_up_sign_value',
-                'avg_up_sign_errorbar',
+                'avg_sign_value',
+                'avg_sign_errorbar',
                 'avg_up_sign_value',
                 'avg_up_sign_errorbar',
                 'avg_dn_sign_value',
@@ -106,24 +107,41 @@ column_names = ['name_of_the_lattice',
                 'd_star_wave_errorbar']
 
 
+
 #get connection with database
 con = sqlite3.connect(args.database)
 #create cursor to the database
 cur = con.cursor()
 
-#TODO check if table in the database exists. If it does not we create it
-sql = 'create table if not exists  DQMC (id integer)'
+#check if table in the database exists. If it does not we create it
+sql = 'create table if not exists  DQMC {column_names}'.format(column_names='(' + ', '.join(column_names) + ')')
+
 cur.execute(sql)
 
-#TODO if we add only one file create tuple that describes it
+def add_file(file_to):
+    file_to_add = open(file_to)
+    dict_to_add = dqmc_parser.dqmc_parser(file_to_add.read())
+    file_to_add.close()
+    result = []
+    for column_name in column_names:
+        try:
+            result += [dict_to_add[column_name]]
+        except:
+            result += ['']
+
+    result = tuple(result)
+    cur.execute("INSERT INTO DQMC VALUES {data}".format(data=result))
+
+#if we add only one file create tuple that describes it
 if args.file:
+    add_file(args.file)
+
+#if we add folder one file create tuple that describes it
+elif args.folder:
+    for file_name in os.listdir(args.folder):
+        add_file(os.path.join(args.folder,file_name))
 
 
-#TODO if we add many files from folder create tuple that describes it
-
-#TODO add tuple to the database
-
-data = cur.fetchone()
-print "SQLite version: %s" % data
-
+con.commit()
 cur.close()
+con.close()
