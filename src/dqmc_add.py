@@ -3,6 +3,7 @@ from __future__ import division
 import argparse
 import sqlite3
 import os
+import sys
 import dqmc_parser
 
 __author__ = 'Vladimir Iglovikov'
@@ -102,7 +103,7 @@ column_names = ['name_of_the_lattice',
                 's_star_star_wave_value',
                 's_star_star_wave_errorbar',
                 'd_wave_value',
-                'd_wave_errorbar'
+                'd_wave_errorbar',
                 'd_star_wave_value',
                 'd_star_wave_errorbar']
 
@@ -118,19 +119,31 @@ sql = 'create table if not exists  DQMC {column_names}'.format(column_names='(' 
 
 cur.execute(sql)
 
+if args.extra:
+    extra = {}
+    exec(open(args.extra).read())
+
 def add_file(file_to):
     file_to_add = open(file_to)
     dict_to_add = dqmc_parser.dqmc_parser(file_to_add.read())
+    if not dict_to_add:
+        return False
+
     file_to_add.close()
     result = []
     for column_name in column_names:
         try:
             result += [dict_to_add[column_name]]
         except:
-            result += ['']
+            try:
+                result += [extra[column_name]]
+            except:
+                result += ['']
 
     result = tuple(result)
     cur.execute("INSERT INTO DQMC VALUES {data}".format(data=result))
+
+    return True
 
 #if we add only one file create tuple that describes it
 if args.file:
@@ -141,7 +154,7 @@ elif args.folder:
     for file_name in os.listdir(args.folder):
         print
         print file_name
-        add_file(os.path.join(args.folder,file_name))
+        add_file(os.path.join(args.folder, file_name))
 
 
 con.commit()
