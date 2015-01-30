@@ -139,6 +139,8 @@ if args.file:
 #if we add folder one file create tuple that describes it
 elif args.folder:
     for file_name in os.listdir(args.folder):
+        print
+        print file_name
         add_file(os.path.join(args.folder,file_name))
 
 

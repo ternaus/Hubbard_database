@@ -28,9 +28,22 @@ def dqmc_parser(data_file):
     reject_count = int(re.search('(?<=Reject count :)\s+.?\d+', data_file).group(0))
     approximate_accept_rate = float(re.search('(?<=Approximate accept rate :)\s+.?\d+\.\d+', data_file).group(0))
     gamma = float(re.search('(?<=gamma :)\s+.?\d+\.\d+', data_file).group(0))
-    global_move_accept_count = int(re.search('(?<=Global move accept count :)\s+.?\d+', data_file).group(0))
-    global_move_reject_count = int(re.search('(?<=Global move reject count :)\s+.?\d+', data_file).group(0))
-    global_move_accept_rate = float(re.search('(?<=Global move accept rate :)\s+.?\d+', data_file).group(0))
+
+    try:
+        global_move_accept_count = int(re.search('(?<=Global move accept count :)\s+.?\d+', data_file).group(0))
+    except:
+        pass
+
+    try:
+        global_move_reject_count = int(re.search('(?<=Global move reject count :)\s+.?\d+', data_file).group(0))
+    except:
+        pass
+
+    try:
+        global_move_accept_rate = float(re.search('(?<=Global move accept rate :)\s+.?\d+', data_file).group(0))
+    except:
+        pass
+
     type_of_matrix_b = '"' + re.search('(?<=Type of matrix B :)\s+.+\s*\n', data_file).group(0).strip() + '"'
     type_of_matrix_hsf = '"' + re.search('(?<=Type of matrix HSF :)\s+\w+\s*', data_file).group(0).strip() + '"'
 
@@ -178,9 +191,6 @@ def dqmc_parser(data_file):
         'reject_count': reject_count,
         'approximate_accept_rate': approximate_accept_rate,
         'gamma': gamma,
-        'global_move_accept_count': global_move_accept_count,
-        'global_move_reject_count': global_move_reject_count,
-        'global_move_accept_rate': global_move_accept_rate,
         'type_of_matrix_b': type_of_matrix_b,
         'type_of_matrix_hsf': type_of_matrix_hsf,
         'avg_sign_value': avg_dn_sign_value,
@@ -243,6 +253,12 @@ def dqmc_parser(data_file):
         result['magnetization_squared_value'] = magnetization_squared_value
     if 'magnetization_squared_errorbar' in locals():
         result['magnetization_squared_errorbar'] = magnetization_squared_errorbar
+    if 'global_move_accept_count' in locals():
+        result['global_move_accept_count'] = global_move_accept_count
+    if 'global_move_reject_count' in locals():
+        result['global_move_reject_count'] = global_move_reject_count
+    if 'global_move_accept_rate' in locals():
+        result['global_move_accept_rate'] = global_move_accept_rate
 
     return result
 
