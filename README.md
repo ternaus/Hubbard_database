@@ -20,16 +20,15 @@ python add_to_database.py -database <database name>
 Column names:
  * name_of_the_lattice - name of the lattice (square, triangular, chain, kagome, Lieb, honeycomb, ...)
  * algorithm - algorithm that generates the data (DQMC, Lanczos, ED)
- * time_slice_l
+ * time_slice_l - number of layers in temporal direction
  * dtau 
- * bcond
+ * bcond - type of the boundary conditions
  * number_of_warmup_sweep
- * npass
- * ntry
+ * number_of_measurement_sweep
  * tausk
  * nbin
  * nhist
- * seed
+ * seed - random number seed
  * north
  * nwrap
  * fixwrap
@@ -40,8 +39,11 @@ Column names:
  * t_dn
  * mu_up
  * mu_dn
- * number_of_sites
- * beta
+ * nx
+ * ny
+ * ny
+ * number_of_sites - number of sites in the spatial direction
+ * beta - inverse temperature
  * frequency_of_recomputing_g
  * global_move_number_of_sites
  * accept_count
@@ -53,7 +55,8 @@ Column names:
  * global_move_accept_rate
  * type_of_matrix_b
  * type_of_matrix_hsf
- * avg_sign
+ * avg_sign_value
+ * avg_sign_errorbar
  * avg_up_sign_value
  * abd_up_sign_errorbar
  * avg_dn_sign_value
